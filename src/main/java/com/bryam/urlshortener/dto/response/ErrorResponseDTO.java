@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ErrorResponseDTO {
 
-    private LocalDateTime timestamp;
-    private int status;              // Código HTTP (404, 400, 500, etc.)
+    private LocalDateTime timestamp; //Captura la fecha y hora del error
+    private int status;              // Código HTTP
     private String error;            // Tipo de error
     private String message;          // Mensaje descriptivo
-    private String path;             // Endpoint donde ocurrió el error
+    private String path;             // Endpoint donde ocurrió el error o pwd
 }

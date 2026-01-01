@@ -20,7 +20,7 @@ public class UrlDetailsUserResponseDTO {
     private Integer counterClicksUserResponse;
     private Boolean isPersonalizedUserResponse;
 
-    // Acciones disponibles
+    // Acciones disponibles para usuarios registrados
     private String urlEditUserResponse;      // "/api/links/{codigo}"
     private String urlRemoveUserResponse;    // "/api/links/{codigo}"
     private String urlStatisticsUserResponse; // "/api/links/{codigo}/stats"

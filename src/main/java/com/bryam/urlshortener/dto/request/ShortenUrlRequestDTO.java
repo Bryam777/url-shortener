@@ -14,12 +14,14 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ShortenUrlRequestDTO {
 
-    @NotBlank( message = "URL is required")
-    @Size( max = 2048, message = "URL must not exceed 2048 characters")
-    @Pattern( regexp = "^(https?://).+", message = "URL must start with http:// or https://")
+    // Validaciones para la url original
+    @NotBlank( message = "URL is required") // Validacion para que la peticion no sea vacia
+    @Size( max = 2048, message = "URL must not exceed 2048 characters") // Maximo tamaño URL
+    @Pattern( regexp = "^(https?://).+", message = "URL must start with http:// or https://") // Validacion del formato http https
     private String originalUrlRequest;
 
-    @Size(max= 50, message = "The custom slug cannot exceed 50 characters")
-    @Pattern( regexp = "^[a-zA-Z0-9-]*$", message = "The custom slug can only contain alphanumeric characters and hyphens")
-    private String customSlugRequest;
+    // Validaciones para el dominio personalizado
+    @Size(max= 50, message = "The custom slug cannot exceed 50 characters") //Maximo 50 caracteres para el dominio personalizado
+    @Pattern( regexp = "^[a-zA-Z0-9-]*$", message = "The custom slug can only contain alphanumeric characters and hyphens") 
+    private String customSlugRequest; // pattern para evitar caracteres especiales
 }

@@ -2,15 +2,16 @@ package com.bryam.urlshortener.exception;
 
 import java.time.LocalDateTime;
 
+//Clase de excepcion personalizada para cuando una url ha expirado
 public class UrlExpiredException extends RuntimeException{
 
-    private final LocalDateTime expirationDateTime;
-    private final boolean isPerzonalized;
+    private final LocalDateTime expirationDateTime; //fecha y hora de expiracion de la url
+    private final boolean isPerzonalizedUrlExpired; //indica si la url personalizada ha expirado
     
-    public UrlExpiredException(String message, LocalDateTime expirationDateTime, boolean isPerzonalized) {
+    public UrlExpiredException(String message, LocalDateTime expirationDateTime, boolean isPerzonalizedUrlExpired) {
         super(message);
         this.expirationDateTime = expirationDateTime;
-        this.isPerzonalized = isPerzonalized;
+        this.isPerzonalizedUrlExpired = isPerzonalizedUrlExpired;
     }
 
     public UrlExpiredException(String message, LocalDateTime expirationDateTime) {
@@ -22,6 +23,6 @@ public class UrlExpiredException extends RuntimeException{
     }
 
     public boolean isPerzonalized() {
-        return isPerzonalized;
+        return isPerzonalizedUrlExpired;
     }
 }

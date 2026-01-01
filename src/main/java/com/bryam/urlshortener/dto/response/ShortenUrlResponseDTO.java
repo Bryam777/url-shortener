@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL) //Para evitar campos nulos en la respuesta Json
 public class ShortenUrlResponseDTO {
 
     private String shortUrlResponse;           // URL completa acortada
-    private String urlCodeResponse;             // Solo el código (para facilitar copia)
+    private String urlCodeResponse;             // Solo el código para facilitar copia
     private String urlOriginalResponse;        // URL original
-    private LocalDateTime createDateTimeResponse;
+    private LocalDateTime createDateTimeResponse; // Fecha y hora de creacion
     private LocalDateTime expirationDateTimeResponse;  // null para usuarios registrados
     private Boolean isPersonalizedResponse;             // true si tiene slug custom
     private Boolean reusedResponse;

@@ -57,8 +57,8 @@ public class Url {
         @Column( name = "user_id")
         private Long userId;
 
-        /*@Column( name = "counter_clicks", nullable = false)
-        private Integer counterClicks;*/
+        @Column( name = "full_hash", nullable = false, unique = true, length = 64)
+        private String fullHash;
 
         @Column( name = "counter_clicks_total")
         private Integer counterClicksTotal;

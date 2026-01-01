@@ -25,8 +25,14 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
     //Buscar una Url por su codigo corto y estado
     Optional<Url> findByShortCodeAndStateUrl(String shortCode, StateUrl stateUrl);
 
+    //Buscar hash competo
+    Optional<Url> findByFullHash(String fullHash);
+
     //Verificar si existe una Url por su codigo corto
     boolean existsByShortCode(String shortCode);
+
+    //Verificar si existe una url por su hash completo
+    boolean existsByFullHash(String fullHash);
 
     //Buscar Urls expiradas para marcalas
     List<Url> findByTypeUrlAndStateUrlAndExpirationDateBefore(TypeUrl typeUrl, StateUrl stateUrl, LocalDateTime dateTime);
@@ -49,39 +55,4 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
     @Query("SELECT u FROM Url u WHERE u.TimesReactivated > 0 ORDER BY u.timesReactivated DESC")
     List<Url> findUrlsMoreReused(Pageable pageable);
 
-    /*// ========== MÉTODOS PARA FASE 3 (Usuarios Registrados) ==========
-    
-    // Listar todas las URLs de un usuario (para dashboard)
-    List<Url> findByUsuarioIdOrderByFechaCreacionDesc(Long usuarioId);
-    
-    // Contar URLs creadas por un usuario HOY (rate limiting)
-    long countByUsuarioIdAndFechaCreacionAfter(Long usuarioId, LocalDateTime fecha);
-    
-    // Contar URLs creadas por un usuario en total
-    long countByUsuarioId(Long usuarioId);
-    
-    // Buscar URL por código Y usuario (para verificar propiedad)
-    Optional<Url> findByCodigoCortoAndUsuarioId(String codigoCorto, Long usuarioId);
-    
-    // Eliminar URL por código Y usuario (para que solo el dueño pueda eliminar)
-    @Modifying
-    @Query("DELETE FROM Url u WHERE u.codigoCorto = :codigo AND u.usuarioId = :usuarioId")
-    void deleteByCodigoCortoAndUsuarioId(
-        @Param("codigo") String codigoCorto, 
-        @Param("usuarioId") Long usuarioId
-    );
-    
-    
-    // ========== MÉTODOS ESTADÍSTICOS (Opcional - Futuro) ==========
-    
-    // Total de URLs en el sistema
-    @Query("SELECT COUNT(u) FROM Url u WHERE u.estado = :estado")
-    long countByEstado(@Param("estado") EstadoUrl estado);
-    
-    // URLs más clickeadas (top 10)
-    List<Url> findTop10ByOrderByContadorClicksDesc();
-    
-    // Total de clicks en todas las URLs
-    @Query("SELECT SUM(u.contadorClicks) FROM Url u")
-    Long sumAllClicks();*/
 }
