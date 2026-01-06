@@ -92,7 +92,7 @@ public class IpUtil {
 
     public static boolean isValidIPFormat(String ip){
 
-        //Verificar si es IPv4
+        //Verificar si es IPv4, permitir formato de Ipv
         if (ip.matches("^(\\d{1,3}\\.){3}\\d{1,3}$")) {
             return isIpValid(ip);
         }
@@ -133,8 +133,8 @@ public class IpUtil {
 
     public static boolean isValidIpv6(String ip){
         // Validacion simplificada de IPv6
-        // Formato: 8 grupos de 4 dígitos hexadecimales separados por ":"
-        // Un ejemplo: 2001:0db8:85a3:0000:0000:8a2e:0370:7334
+        // Formato, 8 grupos de 4 dígitos hexadecimales separados por :
+        // Un ejemplo, 2001:0db8:85a3:0000:0000:8a2e:0370:7334
         // Tambien permite :: para comprimir ceros
 
         String ipv6Pattern = 
@@ -178,7 +178,7 @@ public class IpUtil {
             }
         }
 
-        // 192.168.0.0 - 192.168.255.255
+        // Rango de Ipv4 192.168.0.0 - 192.168.255.255
         if (ip.startsWith("192.168.")) {
             return true;
         }
