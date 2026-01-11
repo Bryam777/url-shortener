@@ -8,6 +8,6 @@ public interface ValidatorUrlService {
     //Reconstruir o normalizar la url
     String normalizeUrl(String url);
 
-    //Perzonalizacion del dominio o slug de un usuario
+    //Personalización del dominio o slug de un usuario
     void validateSlug(String slug);
 }

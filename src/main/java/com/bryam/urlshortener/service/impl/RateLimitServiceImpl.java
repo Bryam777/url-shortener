@@ -32,8 +32,8 @@ public class RateLimitServiceImpl implements RateLimitService {
     @Override
     public void verifyAnonymousLimit(HttpServletRequest request) {
 
-        //SE llama la clase IpUtil con el metodoto para obtener la ip
-        //del usuario mediante la peticion que envia
+        //SE llama la clase IpUtil con el método para obtener la ip
+        //del usuario mediante la petición que envía
         String ip = IpUtil.getClientIpAdress(request);
 
         //Se utiliza la funcion computeIfAbsent de Map para crear el mapa

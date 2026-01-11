@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ValidatorUrlServiceImpl implements ValidatorUrlService{
 
-    //Obterner el valor del dominio base desde applicatio.properties
+    //Obtener el valor del dominio base desde application.properties
     @Value("${app.base-url}")
     private String baseUrl;
     
@@ -41,12 +41,12 @@ public class ValidatorUrlServiceImpl implements ValidatorUrlService{
 
     @Override
     public void validateUrlFormat(String url) {
-        //Validacion de que la url nosea vacia o nula, si lo esta detener el hilocon una excepcion
+        //Validación de que la url no sea vacía o nula, si lo esta detener el hilo con una excepción
         if (url == null || url.trim().isEmpty()) {
             throw new InvalidUrlException("The URL cannot be empty.");
         }
 
-        //Validacion que tenga un formato valido, si es diferente detener el hilo
+        //Validación que tenga un formato valido, si es diferente detener el hilo
         if (!url.matches("^https?://.*")) {
             throw new InvalidUrlException("The URL must start with http:// or https://");
             
@@ -57,7 +57,7 @@ public class ValidatorUrlServiceImpl implements ValidatorUrlService{
             throw new InvalidUrlException( "The URL is too long maximum 2048 characters");
         }
 
-        //Validacion del formato con java.net.URL
+        //Validación del formato con java.net.URL
         try {
             
             // Crear el URI 
@@ -65,8 +65,8 @@ public class ValidatorUrlServiceImpl implements ValidatorUrlService{
             // Convertir el URI a URL
             URL urlObj = uriObj.toURL();
 
-            //Validar que tenga el host, obteniendodo del objeto Url
-            //Validar que el host no sea vacio o nulo, si lo es detener el hilo
+            //Validar que tenga el host, obteniéndolo del objeto Url
+            //Validar que el host no sea vació o nulo, si lo es detener el hilo
             if (urlObj.getHost() == null || urlObj.getHost().isEmpty()) {
                 throw new InvalidUrlException("The URL does not have a valid domain.");
             }
@@ -90,7 +90,7 @@ public class ValidatorUrlServiceImpl implements ValidatorUrlService{
                 }
             }
 
-            //Si pasa todas las validaciones registar en el log
+            //Si pasa todas las validaciones registrar en el log
             log.debug("URL successfully validated: {}", url);
 
         } catch (MalformedURLException  e) {
@@ -108,12 +108,12 @@ public class ValidatorUrlServiceImpl implements ValidatorUrlService{
             return null;
         }
 
-        // Normalizar la URL eliminando especios en blanco y asegurando un formato consistenete
+        // Normalizar la URL eliminando espacios en blanco y asegurando un formato consistente
         try {
-            //INstanciando URI para haceder a las diferentes partes de la URL
+            //Instanciando URI para acceder a las diferentes partes de la URL
             URI uri = new URI(url.trim());
 
-            //Validar con ternarios las diferentes experciones para reconstruir la url o normalizar
+            //Validar con ternarios las diferentes expresiones para reconstruir la url o normalizar
             String scheme = uri.getScheme() != null ? uri.getScheme().toLowerCase() : "http";
             String host = uri.getHost() != null ? uri.getHost().toLowerCase() : "";
             int port = uri.getPort();
@@ -132,14 +132,14 @@ public class ValidatorUrlServiceImpl implements ValidatorUrlService{
             //URL normalizada
             normalizedUrl.append(path).append(query);
 
-            //Registrar la correcta normalizacion en el log
+            //Registrar la correcta normalización en el log
             log.debug("Normalized URL: {} -> {}", url, normalizedUrl);
-            //Retonar la URL normalizada, y combartida a String
+            //Ratonar la URL normalizada, y convertida a String
             return normalizedUrl.toString();
 
             
         } catch (URISyntaxException | MalformedURLException e) {
-            //Registrar la falla en log y retonar devuelta la url original
+            //Registrar la falla en log y retornar devuelta la url original
                 log.warn("URL could not be normalized: {}", url);
             return url;
         }
@@ -148,17 +148,17 @@ public class ValidatorUrlServiceImpl implements ValidatorUrlService{
     @Override
     public void validateSlug(String slug) {
 
-        //Validar que el slug no sea nulo o vacio, si lo es detener el hilo
+        //Validar que el slug no sea nulo o vació, si lo es detener el hilo
         if (slug == null || slug.trim().isEmpty()) {
             throw new InvalidUrlException("The slug cannot be empty");
         }
 
-        //Validar el maximo y minimo de caracteres del slug, si no se cumple detener el hilo
+        //Validar el máximo y mínimo de caracteres del slug, si no se cumple detener el hilo
         if (slug.length() < 3 || slug.length() > 50)  {
             throw new InvalidUrlException("The slug must be between 3 and 50 characters long");
         }
 
-        //Validar que el slug no contenga caracteres especialesn si lo contiene detener el hilo
+        //Validar que el slug no contenga caracteres especialicen si lo contiene detener el hilo
         if (!slug.matches("^[a-zA-Z0-9-]+$")) {
             throw new InvalidUrlException("The slug can only contain letters, numbers, and hyphens.");
         }
