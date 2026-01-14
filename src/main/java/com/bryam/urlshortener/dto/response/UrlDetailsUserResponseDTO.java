@@ -21,7 +21,7 @@ public class UrlDetailsUserResponseDTO {
     private Boolean isPersonalizedUserResponse;
 
     // Acciones disponibles para usuarios registrados
-    private String urlEditUserResponse;      // "/api/links/{codigo}"
-    private String urlRemoveUserResponse;    // "/api/links/{codigo}"
-    private String urlStatisticsUserResponse; // "/api/links/{codigo}/stats"
+    private String urlEditUserResponse;      // "/api/links/{código}"
+    private String urlRemoveUserResponse;    // "/api/links/{código}"
+    private String urlStatisticsUserResponse; // "/api/links/{código}/stats"
 }

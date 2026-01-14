@@ -97,6 +97,7 @@ public class UrlServiceImpl implements UrlService {
 
     @Override
     @Transactional
+    @SuppressWarnings("null")
     public ShortenUrlResponseDTO shortenRegisteredUrl(ShortenUrlRequestDTO requestDTO, Long userId) {
 
         log.info("Starting URL shortening for registered user: {}", userId);
@@ -143,7 +144,7 @@ public class UrlServiceImpl implements UrlService {
                     .fullHash(null)
                     .build();
 
-            temporaryUrl = urlRepository.save(temporaryUrl);
+            temporaryUrl = (Url) urlRepository.save(temporaryUrl);
 
             // Generar el base62 a partir del id
             shortCode = codeGeneratorService.generateCodeBase62(temporaryUrl.getId());
@@ -231,6 +232,7 @@ public class UrlServiceImpl implements UrlService {
 
     @Override
     @Transactional
+    @SuppressWarnings("null")
     public void deleteUrl(String shortCode, Long userId) {
 
         log.info("Removing URLs: {} by user: {}", shortCode, userId);
@@ -246,14 +248,18 @@ public class UrlServiceImpl implements UrlService {
         }
 
         // Marcar la url como eliminada técnica soft delete
-        url.setStateUrl(StateUrl.DELETED);
-        urlRepository.save(url);
+        Url deleteUrl = url.toBuilder()
+                .stateUrl(StateUrl.DELETED)
+                .build();
+
+        urlRepository.save(deleteUrl);
 
         log.info("URL marked as deleted: {}", shortCode);
     }
 
     @Override
     @Transactional
+    @SuppressWarnings("null")
     public void updateDestinationUrl(String shortCode, String newUrl, Long userId) {
 
         log.info("Updating URL destination: {} by user: {}", shortCode, userId);
@@ -272,8 +278,10 @@ public class UrlServiceImpl implements UrlService {
         }
 
         // Actualizar la url
-        url.setOriginalUrl(normalizedUrl);
-        urlRepository.save(url);
+        Url updateUrl = url.toBuilder()
+                .originalUrl(normalizedUrl)
+                .build();
+        urlRepository.save(updateUrl);
 
         log.info("Updated URL: {} → {}", shortCode, normalizedUrl);
     }
@@ -296,19 +304,22 @@ public class UrlServiceImpl implements UrlService {
     }
 
     // Reactivar una url expirada para usuarios anónimos
+    @SuppressWarnings("null")
     private void reactivateUrl(Url url) {
-        // Buscar o investigar otra forma de implementar para que sea inmutable
-        url.setStateUrl(StateUrl.ACTIVE);
-        url.setLastActivationDateTime(LocalDateTime.now());
-        url.setExpirationDateTime(LocalDateTime.now().plusDays(daysExpiration));
-        url.setCounterClicksSession(0);
-        url.setTimesReactivated(url.getTimesReactivated() + 1);
+        Url reactivated = url.toBuilder()
+                .stateUrl(StateUrl.ACTIVE)
+                .lastActivationDateTime(LocalDateTime.now())
+                .expirationDateTime(LocalDateTime.now().plusDays(daysExpiration))
+                .counterClicksSession(0)
+                .timesReactivated(url.getTimesReactivated() + 1)
+                .build();
 
-        urlRepository.save(url);
+        urlRepository.save(reactivated);
 
         log.info("Reactivated URL: {} (reactivation's: {})", url.getShortCode(), url.getTimesReactivated());
     }
 
+    @SuppressWarnings("null")
     private Url createNewAnonymousUrl(String urlOriginal, String hashComplete, String shortCode) {
 
         Url url = Url.builder()
@@ -325,9 +336,10 @@ public class UrlServiceImpl implements UrlService {
                 .isPerzonalized(false)
                 .build();
 
-        return urlRepository.save(url);
+        return (Url) urlRepository.save(url);
     }
 
+    @SuppressWarnings("null")
     private Url createNewRegisteredUrl(String originalUrl, String shortCode, Long userId, boolean isPerzonalized) {
 
         Url url = Url.builder()
@@ -344,7 +356,7 @@ public class UrlServiceImpl implements UrlService {
                 .isPerzonalized(isPerzonalized)
                 .build();
 
-        return urlRepository.save(url);
+        return (Url) urlRepository.save(url);
     }
 
 }

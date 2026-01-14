@@ -24,56 +24,56 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class Url {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-        @Column( name = "short_code", nullable = false, unique = true, length = 10)
-        private String shortCode;
+    @Column(name = "short_code", nullable = false, unique = true, length = 10)
+    private String shortCode;
 
-        @Column( name = "original_url", nullable = false, columnDefinition = "TEXT")
-        private String originalUrl;
+    @Column(name = "original_url", nullable = false, columnDefinition = "TEXT")
+    private String originalUrl;
 
-        @Enumerated(EnumType.STRING)
-        @Column( name = "type_url",nullable = false, length = 10)
-        private TypeUrl typeUrl;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_url", nullable = false, length = 10)
+    private TypeUrl typeUrl;
 
-        @Enumerated(EnumType.STRING)
-        @Column( name = "state_url", nullable = false, length = 10)
-        private StateUrl stateUrl;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state_url", nullable = false, length = 10)
+    private StateUrl stateUrl;
 
-        @Column(name = "creation_date", nullable = false, updatable = false)
-        private LocalDateTime creationDateTime;
+    @Column(name = "creation_date", nullable = false, updatable = false)
+    private LocalDateTime creationDateTime;
 
-        @Column( name = "expiration_date")
-        private LocalDateTime expirationDateTime;
+    @Column(name = "expiration_date")
+    private LocalDateTime expirationDateTime;
 
-        @Column( name = "last_activation_date")
-        private LocalDateTime lastActivationDateTime;
-        
-        @Column( name = "user_id")
-        private Long userId;
+    @Column(name = "last_activation_date")
+    private LocalDateTime lastActivationDateTime;
 
-        @Column( name = "full_hash", nullable = false, unique = true, length = 64)
-        private String fullHash;
+    @Column(name = "user_id")
+    private Long userId;
 
-        @Column( name = "counter_clicks_total")
-        private Integer counterClicksTotal;
+    @Column(name = "full_hash", nullable = true, unique = true, length = 64)
+    private String fullHash;
 
-        @Column( name = "counter_clicks_session")
-        private Integer counterClicksSession;
+    @Column(name = "counter_clicks_total")
+    private Integer counterClicksTotal;
 
-        @Column( name = "times_reactivated")
-        private Integer timesReactivated;
+    @Column(name = "counter_clicks_session")
+    private Integer counterClicksSession;
 
-        @Column( name = "is_perzonalized", nullable = false)
-        private Boolean isPerzonalized;
+    @Column(name = "times_reactivated")
+    private Integer timesReactivated;
 
-        @PrePersist
-        protected void onCreate() {
+    @Column(name = "is_perzonalized", nullable = false)
+    private Boolean isPerzonalized;
+
+    @PrePersist
+    protected void onCreate() {
         creationDateTime = LocalDateTime.now();
         lastActivationDateTime = LocalDateTime.now();
 

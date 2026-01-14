@@ -10,25 +10,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class HashUtil {
 
-    //Metodo para crear una instancia de MessageDigest para SHA-256
+    //Método para crear una instancia de MessageDigest para SHA-256
     private static final ThreadLocal<MessageDigest> DIGEST = ThreadLocal.withInitial(() ->{
-        //Manejar la excepcion en caso de que el algoritmo no este disponible
+        //Manejar la excepción en caso de que el algoritmo no este disponible
         try {
             //Crear una instancia de MessageDigest con el algoritmo SHA-256
             return MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException  e) {
-            //Lanzar una excepcion para parar el hilo si no se encuentra el algoritmo
+            //Lanzar una excepción para parar el hilo si no se encuentra el algoritmo
             throw new IllegalStateException(
                 "SHA-256 not available in the JVM", e
             );
         }
     });
 
-    //Metodo para generar el hash de una url
+    //Método para generar el hash de una url
     public static String generateHash(String originalUrl){
-        //Verificar que la url no sea nula o vacia
+        //Verificar que la url no sea nula o vacía
         if (originalUrl == null || originalUrl.trim().isEmpty()) {
-            //Lanzar una excepcion para parar el hilo si la url es invalidad
+            //Lanzar una excepción para parar el hilo si la url es invalidad
             throw new IllegalArgumentException("The original URL cannot be null or empty");
         }
         //Obtener la instancia de MessageDigest para el hilo actual
@@ -41,8 +41,8 @@ public class HashUtil {
         return HexFormat.of().formatHex(hasBytes);
     }
 
-    //Metodo para  extraer el codigo hash generado de una url
-    //Recibe el hahs completo y la longitud del codigo a extraer
+    //Método para  extraer el código hash generado de una url
+    //Recibe el hahs completo y la longitud del código a extraer
     public static String extractCode(String hashComplete, int codeLength){
         if (hashComplete == null || hashComplete.length() < codeLength) {
             throw new IllegalArgumentException("The hash is invalid or too short");

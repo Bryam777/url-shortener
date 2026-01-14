@@ -23,9 +23,9 @@ public class IpUtil {
 
     // Extraer la ip de un Header especifico
     public static String extractIpFromHeader(HttpServletRequest request, String headerName){
-        //Se obtine el header de la peticion
+        //Se obtiene el header de la petición
         String headerValue = request.getHeader(headerName);
-        // Validar que el header no este vacio, nulo o desconocido
+        // Validar que el header no este vació, nulo o desconocido
         if (headerName == null || headerName.isEmpty() || "unknown".equalsIgnoreCase(headerValue)) {
             return null;
         }
@@ -45,16 +45,16 @@ public class IpUtil {
         return headerValue.trim();
     }
 
-    //Metodo para obtener la direccion ip del cliente desde la peticion http
+    //Método para obtener la direccion ip del cliente desde la petición http
     public static String getClientIpAdress(HttpServletRequest request) {
-        //Veificar que la peticion no sea nula
+        //Verificar que la petición no sea nula
         if (request == null) {
-            //Si la peticion es nula, se guarda un log de advertencia y se retorna una ip por defecto
+            //Si la petición es nula, se guarda un log de advertencia y se retorna una ip por defecto
             log.warn("HttpServletRequest is null, returning unknown IP");
             return "0.0.0.0";
         }
 
-        //Se recorre la constante HEADERS_IP para verificar de cual de todos los proxis viene la peticion
+        //Se recorre la constante HEADERS_IP para verificar de cual de todos los proxies viene la petición
         //para obtener la ip del cliente
         for (String header: HEADERS_IP) {
             String ip = extractIpFromHeader(request, header);
@@ -75,7 +75,7 @@ public class IpUtil {
     }
 
     public static boolean isIpValid(String ip){
-        //Verificar que la ip exista, que no sea vacia, nula o desconocida
+        //Verificar que la ip exista, que no sea vacía, nula o desconocida
         if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip) ) {
             return false;
         }
@@ -108,7 +108,7 @@ public class IpUtil {
     // Validar si una cadena es una direccion IPv4
     public static boolean isValidIpv4(String ip){
         // Dividir la direccion Ip en sus cuatro octetos
-        //Se usa \\., porque el punto es un caracter especial en expreciones regulares
+        //Se usa \\., porque el punto es un caracter especial en expresiones regulares
         String[] parts = ip.split("\\.");
 
         // Verificar que haya exactamente cuatro partes
