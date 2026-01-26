@@ -40,7 +40,7 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
 
         // Eliminar Urls expiradas
         @Modifying
-        @Query("DELETE FROM Url u WHERE u.stateUrl = :stateUrl AND u.expirationDate < :dateTime")
+        @Query("DELETE FROM Url u WHERE u.stateUrl = :stateUrl AND u.expirationDateTime < :dateTime")
         void deleteByStateUrlAndExpirationDateTimeBefore(
                         @Param("stateUrl") StateUrl stateUrl,
                         @Param("dateTime") LocalDateTime dateTime);
@@ -53,7 +53,7 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
 
         // Traer urls que han sido activadas, se utiliza Pageable, para que lo traiga
         // por pagina
-        @Query("SELECT u FROM Url u WHERE u.TimesReactivated > 0 ORDER BY u.timesReactivated DESC")
+        @Query("SELECT u FROM Url u WHERE u.timesReactivated > 0 ORDER BY u.timesReactivated DESC")
         Page<Url> findUrlsMoreReused(Pageable pageable);
 
         // Listar todas las URLs de un usuario (para dashboard)
@@ -83,7 +83,7 @@ public interface UrlRepository extends JpaRepository<Url, Long> {
         List<Url> findTop10ByOrderByCounterClicksTotalDesc();
 
         // Total de clicks en todas las URLs
-        @Query("SELECT SUM(u.contadorClicks) FROM Url u")
+        @Query("SELECT SUM(u.counterClicksTotal) FROM Url u")
         Long sumAllCounterClicksTotal();
 
 }

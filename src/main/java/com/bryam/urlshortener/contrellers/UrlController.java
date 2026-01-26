@@ -50,7 +50,7 @@ public class UrlController {
         }
 
         // Redirigir a la URL original a partir del código corto(shortCode)
-        @GetMapping("{code }")
+        @GetMapping("{code}")
         @SuppressWarnings("null")
         public ResponseEntity<ShortenUrlResponseDTO> redirect(@PathVariable String code) {
 
