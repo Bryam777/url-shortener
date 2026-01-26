@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +37,11 @@ public class UrlServiceImpl implements UrlService {
     private final ValidatorUrlService validatorUrlService;
     private final RateLimitService rateLimitService;
 
-    private int daysExpiration = 7;
-    private String baseUrl = "http://localhost:8080";
+    @Value("${app.url.days-expiration}")
+    private int daysExpiration;
+
+    @Value("${app.base-url}")
+    private String baseUrl;
 
     @Override
     @Transactional

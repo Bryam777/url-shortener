@@ -22,63 +22,62 @@ import lombok.extern.slf4j.Slf4j;
 public class RateLimitServiceImpl implements RateLimitService {
 
     private final UrlRepository urlRepository;
-    //Se utiliza un ConcurrentHashMap para que no haya sobre escritura por multiples hilos
+    // Se utiliza un ConcurrentHashMap para que no haya sobre escritura por
+    // multiples hilos
     private final Map<String, RateLimitInfo> cacheAnonymous = new ConcurrentHashMap<>();
 
-    private static final int LIMIT_ANONYMOUS_TIME = 5;
+    private static final int LIMIT_ANONYMOUS_TIME = 12;
     private static final int LIMIT_USERS_DAY = 100;
     private static final long WINDOW_HOURS = 1;
 
     @Override
     public void verifyAnonymousLimit(HttpServletRequest request) {
 
-        //SE llama la clase IpUtil con el método para obtener la ip
-        //del usuario mediante la petición que envía
+        // SE llama la clase IpUtil con el método para obtener la ip
+        // del usuario mediante la petición que envía
         String ip = IpUtil.getClientIpAdress(request);
 
-        //Se utiliza la funcion computeIfAbsent de Map para crear el mapa
+        // Se utiliza la funcion computeIfAbsent de Map para crear el mapa
         RateLimitInfo info = cacheAnonymous.computeIfAbsent(ip, k -> new RateLimitInfo());
 
         LocalDateTime time = LocalDateTime.now();
 
-        //Verificar si la ventana de tiempo expiro
+        // Verificar si la ventana de tiempo expiro
         if (Duration.between(info.getWindowInit(), time).toHours() >= WINDOW_HOURS) {
-            //Se resetea el contador
+            // Se resetea el contador
             info.setCount(0);
             info.setWindowInit(time);
             log.debug("Rate limit window reset for IP: {}", IpUtil.obfuscateIP(ip));
         }
 
-        //Verificar el limite
+        // Verificar el limite
         if (info.getCount() >= LIMIT_ANONYMOUS_TIME) {
             long secondsRemaining = calculateTimeRemaining(info, WINDOW_HOURS);
 
             log.warn("Rate limit exceeded for IP: {} (contador: {}",
-                IpUtil.obfuscateIP(ip),
-                info.getCount()
-            );
+                    IpUtil.obfuscateIP(ip),
+                    info.getCount());
 
             throw new RateLimitExceededException(
-            "You have exceeded the request limit",
-             LIMIT_ANONYMOUS_TIME,
-            "hour",
-            secondsRemaining);
+                    "You have exceeded the request limit",
+                    LIMIT_ANONYMOUS_TIME,
+                    "hour",
+                    secondsRemaining);
         }
 
-        //Incrementar contador
+        // Incrementar contador
         info.increase();
         log.debug("Rate Limit for IP {}: {}/{}",
-            IpUtil.obfuscateIP(ip),
-            info.getCount(),
-            LIMIT_ANONYMOUS_TIME
-        );
-        
+                IpUtil.obfuscateIP(ip),
+                info.getCount(),
+                LIMIT_ANONYMOUS_TIME);
+
     }
 
     @Override
     public void verifyUserLimit(Long id) {
 
-        //Tomando la fecha y formateando la hora
+        // Tomando la fecha y formateando la hora
         LocalDateTime homeToday = LocalDateTime.now().toLocalDate().atStartOfDay();
 
         //
@@ -88,22 +87,19 @@ public class RateLimitServiceImpl implements RateLimitService {
             long secondsUntilMidnight = calculateSecondsUntilMidnight();
 
             log.warn("Rate limit exceeded for user:  {} (URLs today: {}",
-                id, homeToday
-            );
+                    id, homeToday);
 
             throw new RateLimitExceededException(
-                "You have exceeded the daily URL limit",
-                LIMIT_USERS_DAY,
-                "Day",
-                secondsUntilMidnight
-            );
+                    "You have exceeded the daily URL limit",
+                    LIMIT_USERS_DAY,
+                    "Day",
+                    secondsUntilMidnight);
         }
 
         log.debug("Rate limit for user {}: {}/{}",
-            id,
-            urlsToday,
-            LIMIT_USERS_DAY
-        );
+                id,
+                urlsToday,
+                LIMIT_USERS_DAY);
     }
 
     @Override
@@ -112,25 +108,25 @@ public class RateLimitServiceImpl implements RateLimitService {
         log.info("Rate limit reset for IP: {}", IpUtil.obfuscateIP(ip));
     }
 
-    //Calcula segundos hasta fin de periodo o ventana de tiempo
-    private long calculateTimeRemaining(RateLimitInfo info, long windowHour){
-        //info el inicio, se agrega la hora a terminar
+    // Calcula segundos hasta fin de periodo o ventana de tiempo
+    private long calculateTimeRemaining(RateLimitInfo info, long windowHour) {
+        // info el inicio, se agrega la hora a terminar
         LocalDateTime endWindow = info.getWindowInit().plusHours(windowHour);
-        //el tiempo inicio y final, se muestra en segundos
+        // el tiempo inicio y final, se muestra en segundos
         return Duration.between(LocalDateTime.now(), endWindow).getSeconds();
     }
 
-    //Calcula los segundos hasta medianoche
-    private long calculateSecondsUntilMidnight(){
-        //Tiempo inicio
+    // Calcula los segundos hasta medianoche
+    private long calculateSecondsUntilMidnight() {
+        // Tiempo inicio
         LocalDateTime nowTime = LocalDateTime.now();
-        //tiempo fin, al dia siguiente, formateado a media noche
+        // tiempo fin, al dia siguiente, formateado a media noche
         LocalDateTime midnight = nowTime.toLocalDate().plusDays(1).atStartOfDay();
-        //tiempo inicio y tiempo final, se muestra en segundos
+        // tiempo inicio y tiempo final, se muestra en segundos
         return Duration.between(nowTime, midnight).getSeconds();
     }
 
-    //Clase interna para contar los limites y fecha de limites
+    // Clase interna para contar los limites y fecha de limites
     private static class RateLimitInfo {
 
         private int count = 0;

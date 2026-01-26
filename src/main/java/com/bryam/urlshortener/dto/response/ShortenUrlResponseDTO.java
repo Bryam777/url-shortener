@@ -2,8 +2,6 @@ package com.bryam.urlshortener.dto.response;
 
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL) // Para evitar campos nulos en la respuesta Json
 public class ShortenUrlResponseDTO {
 
     private String shortUrlResponse; // URL completa acortada
