@@ -5,17 +5,21 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
 @RequestMapping("/health")
+@RequiredArgsConstructor
 public class HealthController {
 
     // Endpoint para monitorear y verificar que el servidor esta activo
+    @GetMapping("/state")
     public ResponseEntity<Map<String, Object>> health() {
 
         log.debug("Health check requested");
@@ -30,6 +34,7 @@ public class HealthController {
     }
 
     // Endpoint para verificar conexión con la BD
+    @GetMapping("/BD")
     public ResponseEntity<Map<String, Object>> healthDatabase() {
 
         Map<String, Object> response = new HashMap<>();
@@ -45,4 +50,5 @@ public class HealthController {
             return ResponseEntity.ok(response);
         }
     }
+
 }

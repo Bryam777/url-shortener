@@ -10,25 +10,27 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface UrlService {
 
-  //Acortar una url para un usuario anónimo
-  //Es con código hash y reutilizara las urls existentes de otros usuarios anónimos
-  ShortenUrlResponseDTO shortenAnonymousUrl(ShortenUrlRequestDTO requestDTO, HttpServletRequest httpServletResponse);
+  // Acortar una url para un usuario anónimo
+  // Es con código hash y reutilizara las urls existentes de otros usuarios
+  // anónimos
+  ShortenUrlResponseDTO shortenAnonymousUrl(ShortenUrlRequestDTO requestDTO, HttpServletRequest httpServletRequest);
 
-  //Acortar una url para un usuario registrado
-  //Usa base62 con slug o dominio personal al acortar la url
+  // Acortar una url para un usuario registrado
+  // Usa base62 con slug o dominio personal al acortar la url
   ShortenUrlResponseDTO shortenRegisteredUrl(ShortenUrlRequestDTO requestDTO, Long userId);
 
-  //Busca por el shortCode para preparar la redireccionamiento
-  //Valida el estado y actualiza el contador de los clicks
+  // Busca por el shortCode para preparar la redireccionamiento
+  // Valida el estado y actualiza el contador de los clicks
   Url getUrlForRedirection(String shortCode);
 
-  //Obtiene todas las urls de un usuario registrado
+  // Obtiene todas las urls de un usuario registrado
   List<ShortenUrlResponseDTO> getUserUrls(Long userId);
 
-  //Eliminar una Url de un usuario registrado
+  // Eliminar una Url de un usuario registrado
   void deleteUrl(String shortCode, Long userId);
 
-  //Actualizar el redireccionamiento de una url corta, ingresando otro destino o Url
+  // Actualizar el redireccionamiento de una url corta, ingresando otro destino o
+  // Url
   void updateDestinationUrl(String shortCode, String newUrl, Long userId);
 
 }

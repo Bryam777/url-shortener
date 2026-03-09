@@ -47,12 +47,12 @@ public class UrlServiceImpl implements UrlService {
     @Transactional
     public ShortenUrlResponseDTO shortenAnonymousUrl(
             ShortenUrlRequestDTO requestDTO,
-            HttpServletRequest httpServletResponse) {
+            HttpServletRequest httpServletRequest) {
 
         log.info("Initiating anonymous URL shortening: {}", requestDTO.getOriginalUrlRequest());
 
         // Verificar el limite del usuario anónimo
-        rateLimitService.verifyAnonymousLimit(httpServletResponse);
+        rateLimitService.verifyAnonymousLimit(httpServletRequest);
 
         // Validar y normalizar Url
         validatorUrlService.validateUrlFormat(requestDTO.getOriginalUrlRequest());
