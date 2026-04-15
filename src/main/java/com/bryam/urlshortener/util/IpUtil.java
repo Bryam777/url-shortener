@@ -26,7 +26,7 @@ public class IpUtil {
         // Se obtiene el header de la petición
         String headerValue = request.getHeader(headerName);
         // Validar que el header no este vació, nulo o desconocido
-        if (headerName == null || headerName.isEmpty() || "unknown".equalsIgnoreCase(headerValue)) {
+        if (headerValue == null || headerValue.isEmpty() || "unknown".equalsIgnoreCase(headerValue)) {
             return null;
         }
         // X-Forwarded-For puede contener múltiples IPs: "cliente, proxy1, proxy2"
@@ -97,7 +97,7 @@ public class IpUtil {
 
         // Verificar si es IPv4, permitir formato de Ipv
         if (ip.matches("^(\\d{1,3}\\.){3}\\d{1,3}$")) {
-            return isIpValid(ip);
+            return isValidIpv4(ip);
         }
 
         // Verificar si es IPv6
