@@ -208,7 +208,7 @@ public class IpUtil {
         if (ip.contains(".")) {
             String[] parts = ip.split("\\.");
             if (parts.length == 4) {
-                return parts[0] + "." + parts[1] + ".***.**";
+                return parts[0] + "." + parts[1] + ".***.***";
             }
         }
 
