@@ -19,7 +19,7 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
     
     private static final int INITIAL_LENGTH = 7;
     private static final int MAX_LENGTH = 12;
-    private static final int MAX_COLLISION_ATTEMPTS = 5;
+    private static final int MAX_COLLISION_ATTEMPTS = 6;
 
     @Override
     public String[] generateCodeHash(String originalUrl) {
