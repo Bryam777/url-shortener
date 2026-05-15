@@ -34,8 +34,8 @@ public class CodeGeneratorServiceImpl implements CodeGeneratorService {
 
             //Verificar si el código ya existe para que no haya colisiones
             if (!urlRepository.existsByShortCode(shortCode)) {
-                log.debug("Generated unique code: {} for URL: {}", shortCode, originalUrl);
-                return new String[] {shortCode, fullHash};
+                log.debug("Generated unique code: {} for URL: {}", fullHash, shortCode);
+                return new String[] {fullHash, shortCode};
             }
             //Si hay colisión, se intenta con un código mas largo y se registrar en un log
             log.debug("Collision detected in length {} for code {}. Trying longer code.", length, shortCode);
